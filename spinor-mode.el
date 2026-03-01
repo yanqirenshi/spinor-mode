@@ -28,7 +28,7 @@
 ;; Quick start:
 ;;   1. Install this package
 ;;   2. Open a .spin file - spinor-mode activates automatically
-;;   3. M-x run-spinor to start the REPL
+;;   3. M-x spinor-run to start the REPL
 ;;
 ;; Key bindings:
 ;;   C-x C-e   Evaluate the S-expression before point
@@ -135,19 +135,19 @@ and strict evaluation semantics.
 
 ;;; Inferior Spinor Mode (REPL)
 
-(defvar inferior-spinor-mode-map
+(defvar spinor-inferior-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map comint-mode-map)
     map)
-  "Keymap for `inferior-spinor-mode'.")
+  "Keymap for `spinor-inferior-mode'.")
 
-(define-derived-mode inferior-spinor-mode comint-mode "Inferior Spinor"
+(define-derived-mode spinor-inferior-mode comint-mode "Inferior Spinor"
   "Major mode for interacting with the Spinor REPL.
 
 This mode is derived from `comint-mode' and provides interaction
 with a running Spinor interpreter process.
 
-\\{inferior-spinor-mode-map}"
+\\{spinor-inferior-mode-map}"
   (setq comint-prompt-regexp "^spinor> ")
   (setq comint-prompt-read-only t)
   ;; Apply Spinor font lock to REPL output
@@ -156,7 +156,7 @@ with a running Spinor interpreter process.
 ;;; REPL Functions
 
 ;;;###autoload
-(defun run-spinor ()
+(defun spinor-run ()
   "Start the Spinor REPL.
 If a REPL process is already running, switch to its buffer."
   (interactive)
@@ -170,7 +170,7 @@ If a REPL process is already running, switch to its buffer."
                         nil
                         spinor-program-args)))
         (with-current-buffer buf
-          (inferior-spinor-mode))
+          (spinor-inferior-mode))
         (pop-to-buffer buf)))))
 
 (defun spinor--get-process ()
@@ -178,7 +178,7 @@ If a REPL process is already running, switch to its buffer."
 Signal an error if the REPL is not running."
   (let ((proc (get-buffer-process spinor-repl-buffer-name)))
     (unless proc
-      (error "Spinor REPL is not running.  Start it with M-x run-spinor"))
+      (error "Spinor REPL is not running.  Start it with M-x spinor-run"))
     proc))
 
 (defun spinor-eval-last-sexp ()
@@ -209,7 +209,7 @@ If the REPL is not running, start it first."
   (let ((buf (get-buffer spinor-repl-buffer-name)))
     (if (and buf (comint-check-proc buf))
         (pop-to-buffer buf)
-      (run-spinor))))
+      (spinor-run))))
 
 (provide 'spinor-mode)
 

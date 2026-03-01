@@ -54,7 +54,7 @@ Open any `.spin` file and `spinor-mode` activates automatically with syntax high
 Start the Spinor REPL:
 
 ```
-M-x run-spinor
+M-x spinor-run
 ```
 
 Key bindings in `spinor-mode`:
